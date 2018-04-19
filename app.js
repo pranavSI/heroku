@@ -1,6 +1,6 @@
 'use strict';
 
-//Environment Variable Directory
+//Declare Project Environment
 process.env["NODE_ENV"] = "development";
 
 // Imports dependencies and set up http server
@@ -81,3 +81,18 @@ app.get('/webhook', (req, res) => {
         }
     }
 });
+
+// Handles messages events
+function handleMessage(sender_psid, received_message) {
+
+}
+
+// Handles messaging_postbacks events
+function handlePostback(sender_psid, received_postback) {
+
+}
+
+// Sends response messages via the Send API
+function callSendAPI(sender_psid, response) {
+
+}
