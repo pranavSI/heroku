@@ -1,5 +1,8 @@
 'use strict';
 
+//Environment Variable Directory
+process.env["NODE_CONFIG_DIR"] = "./config/default.json";
+
 // Imports dependencies and set up http server
 const
     config = require('config'),
