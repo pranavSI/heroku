@@ -1,0 +1,42 @@
+{
+  "name": "kxip-facebot",
+  "version": "1.0.0",
+  "description": "Facebook Messenger Bot for Kings XI Punjab",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pranavSI/kxip-facebot.git"
+  },
+  "keywords": [
+    "IPL",
+    "Indian",
+    "Premier",
+    "League",
+    "KXIP",
+    "Kings",
+    "XI",
+    "Kings",
+    "XI",
+    "Punjab",
+    "LionsDen",
+    "Cricket",
+    "Live",
+    "Scores",
+    "News",
+    "Photos",
+    "Videos",
+    "Matches",
+    "Results",
+    "Points",
+    "Stats"
+  ],
+  "author": "Pranav Desai",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pranavSI/kxip-facebot/issues"
+  },
+  "homepage": "https://github.com/pranavSI/kxip-facebot#readme"
+}
