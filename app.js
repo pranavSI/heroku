@@ -1,7 +1,7 @@
 'use strict';
 
 //Environment Variable Directory
-process.env["NODE_CONFIG_DIR"] = "/config/";
+process.env["NODE_ENV"] = "development";
 
 // Imports dependencies and set up http server
 const
