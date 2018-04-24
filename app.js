@@ -25,7 +25,7 @@ const
 
 // Sets server port and logs message on success
 var app = express();
-app.set('port', process.env.PORT || 5000, () => console.log('I\'m here. I\'m waiting.'));
+app.set('port', process.env.PORT || 80, () => console.log('I\'m here. I\'m waiting.'));
 app.set('view engine', 'ejs');
 app.use(bodyParser.json({
     verify: verifyRequestSignature
