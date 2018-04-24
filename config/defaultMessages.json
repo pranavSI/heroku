@@ -1,7 +1,50 @@
 {
+    "welcomScreen": {
+        "greeting": [{
+            "locale": "default",
+            "text": "Welcome to the Lions Den."
+        }, {
+            "locale": "en_US",
+            "text": "Kings XI Punjab cricket team represents Punjab in the VIVO Indian Premier League."
+        }, {
+            "locale": "pa_IN",
+            "text": "ਸ਼ੇਰ ਦੇ ਘਰ ਵਿੱਚ ਸਵਾਗਤ"
+        }]
+    },
     "getStarted": {
-        "title": "Welcome to the Lions Den!",
+        "responseText": "Welcome Sheron!\nCheer for the 🦁 from Punjab in our quest for our first Vivo Indian Premier League 🏏 🏆",
+        "title": "Select a Language",
+        "image_url": "",
+        "subtitle": ""
+    },
+    "locale": {
+        "responseText": "Just a moment....retrieving the options for you!",
+        "responseTextReg": "ਸਿਰਫ਼ ਇੱਕ ਪਲ....ਤੁਹਾਡੇ ਲਈ ਵਿਕਲਪ ਮੁੜ ਪ੍ਰਾਪਤ ਕਰ ਰਿਹਾ ਹੈ!",
+        "title": "Pick an option",
+        "titleReg": "ਕੋਈ ਵਿਕਲਪ ਚੁਣੋ",
         "image_url": "https://www.kxip.in/static-assets/images/about-banner.jpg",
-        "subtitle": "The lions bring to life the phrase 'Sher-e-Punjab', which literally means 'Lions of Punjab'. Symbolically, the two lions represent Maharaj Ranjit Singh, the most intelligent and powerful ruler of North India and the erstwhile Maharaja of Patiala, Bhupinder Singh. The latter was the first Indian to lead an Indian cricket team to Lord’s in 1911 and was instrumental in setting up of the BCCI."
+        "subtitle": ""
+    },
+    "matches": {
+        "responseText": "Just a moment....retrieving the options for you!",
+        "responseTextReg": "ਸਿਰਫ਼ ਇੱਕ ਪਲ....ਤੁਹਾਡੇ ਲਈ ਵਿਕਲਪ ਮੁੜ ਪ੍ਰਾਪਤ ਕਰ ਰਿਹਾ ਹੈ!",
+        "title": "Pick an option",
+        "titleReg": "ਕੋਈ ਵਿਕਲਪ ਚੁਣੋ",
+        "image_url": "https://www.kxip.in/static-assets/images/about-banner.jpg",
+        "subtitle": ""
+    },
+    "liveMatch": {
+        "responseText": "Just a moment....checking for a Live Match!",
+        "responseTextReg": "ਸਿਰਫ਼ ਇੱਕ ਪਲ....ਲਾਈਵ ਮੈਚ ਲਈ ਜਾਂਚ!",
+        "error": "Sorry. There are no matches live at this time. Click the option below for Recent or Upcoming Matches.",
+        "errorReg": "ਅਫਸੋਸ ਹੈ. ਇਸ ਸਮੇਂ ਕੋਈ ਮੇਲ ਲਾਈਵ ਨਹੀਂ ਹਨ ਤਾਜ਼ਾ ਜਾਂ ਆਗਾਮੀ ਮੈਚਾਂ ਲਈ ਹੇਠ ਦਿੱਤੇ ਵਿਕਲਪ ਤੇ ਕਲਿਕ ਕਰੋ."
+    },
+    "playerList": {
+        "text": "A moment please....retrieving the players for you!",
+        "error": "Oops! Unfortunately we are unable to retrieve the players at this time. Please try again later."
+    },
+    "content": {
+        "text": "A moment please....retrieving the latest updates for you!",
+        "error": "Oops! Unfortunately we are unable to find any new updates at this time. Please try again later."
     }
 }

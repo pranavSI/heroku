@@ -14,6 +14,36 @@ const
     (process.env.MESSENGER_PAGE_ACCESS_TOKEN) :
     config.get('page_access_token');
 
+//Typing on indicator
+module.exports.sendTypingOn = function (recipientId) {
+    console.log("Turning typing indicator on");
+
+    var messageData = {
+        messaging_type: "RESPONSE",
+        recipient: {
+            id: recipientId
+        },
+        sender_action: "typing_on"
+    };
+
+    module.exports.callSendAPI(messageData);
+}
+
+//Send Text Message
+module.exports.sendTextMessage = function (recipientId, messageText) {
+    var messageData = {
+        messaging_type: "RESPONSE",
+        recipient: {
+            id: recipientId
+        },
+        message: {
+            text: messageText,
+            metadata: "METADATA"
+        }
+    };
+
+    module.exports.callSendAPI(messageData);
+}
 
 //Recursive Call Send API
 module.exports.recursiveCallSendAPI = function (senderID, messageDataArray, i) {
@@ -54,4 +84,34 @@ module.exports.recursiveCallSendAPI = function (senderID, messageDataArray, i) {
     //    if(addMainMenuOption)
     //      returnToMainMenu.backToMainMenu(senderID);
     //  };
+}
+
+//Call Send API
+module.exports.callSendAPI = function (messageData) {
+
+    request({
+        uri: 'https://graph.facebook.com/v2.12/me/messages',
+        qs: {
+            access_token: PAGE_ACCESS_TOKEN
+        },
+        method: 'POST',
+        json: messageData,
+
+    }, function (error, response, body) {
+        if (!error && response.statusCode == 200) {
+            console.log(body);
+            var recipientId = body.recipient_id;
+            var messageId = body.message_id;
+
+            if (messageId) {
+                console.log("Successfully sent message with id %s to recipient %s",
+                    messageId, recipientId);
+            } else {
+                console.log("Successfully called Send API for recipient %s",
+                    recipientId);
+            }
+        } else {
+            console.error("Failed calling Send API", response.statusCode, response.statusMessage, body.error);
+        }
+    });
 }
