@@ -25,7 +25,7 @@ const
 
 // Sets server port and logs message on success
 var app = express();
-app.set('port', process.env.PORT || 80, () => console.log('I\'m here. I\'m waiting.'));
+app.set('port', process.env.PORT || 5000, () => console.log('I\'m here. I\'m waiting.'));
 app.set('view engine', 'ejs');
 app.use(bodyParser.json({
     verify: verifyRequestSignature
@@ -88,9 +88,9 @@ function verifyRequestSignature(req, res, buf) {
 }
 
 //Server url definition
-function requiresServerURL(next, [recipientId, ...args]) {
-    next.apply(this, [recipientId, ...args]);
-}
+// function requiresServerURL(next, [recipientId, ...args]) {
+//     next.apply(this, [recipientId, ...args]);
+// }
 
 //Start server. Webhooks must be available via SSL with a certificate signed by a valid certificate authority.
 app.listen(app.get('port'), function () {
