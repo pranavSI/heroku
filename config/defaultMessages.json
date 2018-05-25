@@ -2,49 +2,84 @@
     "welcomScreen": {
         "greeting": [{
             "locale": "default",
-            "text": "Welcome to the Lions Den."
+            "text": "Hi {{user_first_name}} {{user_last_name}}!\n\nWelcome to the Official Delhi Daredevils Facebook Messenger. Your one-stop for everything DD! 🏏"
         }, {
             "locale": "en_US",
-            "text": "Kings XI Punjab cricket team represents Punjab in the VIVO Indian Premier League."
+            "text": "Hi {{user_first_name}} {{user_last_name}}!\n\nWelcome to the Official Delhi Daredevils Facebook Messenger. Your one-stop for everything DD! 🏏"
         }, {
-            "locale": "pa_IN",
-            "text": "ਸ਼ੇਰ ਦੇ ਘਰ ਵਿੱਚ ਸਵਾਗਤ"
+            "locale": "hi_IN",
+            "text": "नमस्ते {{user_first_name}} {{user_last_name}}!\n\nआधिकारिक दिल्ली डेयरडेविल्स फेसबुक मेसेंजर में आपका स्वागत है| आप का एक मात्र स्टॉप सब कुच DD के लिय! 🏏"
         }]
     },
     "getStarted": {
-        "responseText": "Welcome Sheron!\nCheer for the 🦁 from Punjab in our quest for our first Vivo Indian Premier League 🏏 🏆",
+        "responseText": "Hi!\n\nWelcome to the Official Delhi Daredevils Facebook Page. We represent the glorious city of Delhi. The name, Delhi Daredevils, demonstrates the passion, fighting spirit and dynamism of the region and its people. 🏏 🏆",
         "title": "Select a Language",
-        "image_url": "",
-        "subtitle": ""
+        "image_url": "/static-assets/images/teams/1109.png?v=1.2",
+        "subtitle": "This will be the default language for you and can be changed any time by selecting the Swicth Language option from the menu."
     },
     "locale": {
-        "responseText": "Just a moment....retrieving the options for you!",
-        "responseTextReg": "ਸਿਰਫ਼ ਇੱਕ ਪਲ....ਤੁਹਾਡੇ ਲਈ ਵਿਕਲਪ ਮੁੜ ਪ੍ਰਾਪਤ ਕਰ ਰਿਹਾ ਹੈ!",
-        "title": "Pick an option",
-        "titleReg": "ਕੋਈ ਵਿਕਲਪ ਚੁਣੋ",
-        "image_url": "https://www.kxip.in/static-assets/images/about-banner.jpg",
-        "subtitle": ""
+        "text_en": "Just a moment...retrieving the options for you!",
+        "text_hi": "बस एक पल ...आपके लिए विकल्पों की खोज जारी है!",
+        "title_en": "Pick an option",
+        "title_hi": "एक विकल्प चुनें",
+        "image_url": "/static-assets/images/teams/1109.png?v=1.2",
+        "subtitle_en": "",
+        "subtitle_hi": ""
     },
     "matches": {
-        "responseText": "Just a moment....retrieving the options for you!",
-        "responseTextReg": "ਸਿਰਫ਼ ਇੱਕ ਪਲ....ਤੁਹਾਡੇ ਲਈ ਵਿਕਲਪ ਮੁੜ ਪ੍ਰਾਪਤ ਕਰ ਰਿਹਾ ਹੈ!",
-        "title": "Pick an option",
-        "titleReg": "ਕੋਈ ਵਿਕਲਪ ਚੁਣੋ",
-        "image_url": "https://www.kxip.in/static-assets/images/about-banner.jpg",
-        "subtitle": ""
+        "text_en": "Just a moment...retrieving the options for you!",
+        "text_hi": "बस एक पल...आपके लिए विकल्पों की खोज जारी है!",
+        "title_en": "Pick an option",
+        "title_hi": "एक विकल्प चुनें",
+        "image_url": "/static-assets/images/teams/1109.png?v=1.2",
+        "subtitle_en": "",
+        "subtitle_hi": ""
     },
     "liveMatch": {
-        "responseText": "Just a moment....checking for a Live Match!",
-        "responseTextReg": "ਸਿਰਫ਼ ਇੱਕ ਪਲ....ਲਾਈਵ ਮੈਚ ਲਈ ਜਾਂਚ!",
-        "error": "Sorry. There are no matches live at this time. Click the option below for Recent or Upcoming Matches.",
-        "errorReg": "ਅਫਸੋਸ ਹੈ. ਇਸ ਸਮੇਂ ਕੋਈ ਮੇਲ ਲਾਈਵ ਨਹੀਂ ਹਨ ਤਾਜ਼ਾ ਜਾਂ ਆਗਾਮੀ ਮੈਚਾਂ ਲਈ ਹੇਠ ਦਿੱਤੇ ਵਿਕਲਪ ਤੇ ਕਲਿਕ ਕਰੋ."
+        "text_en": "Just a moment...checking for Live Matches!",
+        "text_hi": "बस एक पल...लाइव मैच की खोज जारी है!",
+        "error_en": "Sorry. No match information available at this time.",
+        "error_hi": "माफ़ कीजिये। इस समय कोई मैच की जानकारी उपलब्ध नहीं है।",
+        "viewBtn_en": "View Full Scorecard",
+        "viewBtn_hi": "पूर्ण स्कोरकार्ड"
+    },
+    "upcomingMatch": {
+        "text_en": "Just a moment...checking for Upcoming Matches!",
+        "text_hi": "बस एक पल...आने वाले मॅच की खोज जारी है!",
+        "error_en": "Sorry. No match information available at this time.",
+        "error_hi": "माफ़ कीजिये। इस समय कोई मैच की जानकारी उपलब्ध नहीं है।"
+    },
+    "recentMatch": {
+        "text_en": "Just a moment...checking for Recently Concluded Matches!",
+        "text_hi": "बस एक पल...ख़तम हुई मॅच की खोज जारी है!",
+        "error_en": "Sorry. No match information available at this time.",
+        "error_hi": "माफ़ कीजिये। इस समय कोई मैच की जानकारी उपलब्ध नहीं है।",
+        "viewBtn_en": "View Full Scorecard",
+        "viewBtn_hi": "पूर्ण स्कोरकार्ड"
     },
     "playerList": {
-        "text": "A moment please....retrieving the players for you!",
-        "error": "Oops! Unfortunately we are unable to retrieve the players at this time. Please try again later."
+        "text_en": "A moment please...retrieving the players for you!",
+        "text_hi": "बस एक पल...खिलाड़ियों की खोज जारी है!",
+        "error_en": "Oops! Unfortunately we are unable to retrieve the players at this time. Please try again later.",
+        "error_hi": "दुर्भाग्यवश हम इस समय खिलाड़ियों की जानकारी प्राप्त करने में असमर्थ हैं| कृप्या कुछ समय बाद फ़िर से प्रयास करे|"
     },
     "content": {
-        "text": "A moment please....retrieving the latest updates for you!",
-        "error": "Oops! Unfortunately we are unable to find any new updates at this time. Please try again later."
+        "text_4": "A moment please...retrieving the latest updates for you!",
+        "text_60": "बस एक पल...नई जानकारी की खोज जारी है!",
+        "error_4": "Oops! Unfortunately we are unable to find any new updates at this time. Please try again later.",
+        "error_60": "दुर्भाग्यवश हम इस समय कोई नई जानकारी नहीं ढूंढ पाए हैं| कृप्या कुछ समय बाद फ़िर से प्रयास करे|"
+    },
+    "shop": {
+        "text_en": "A moment please...retrieving the list of products for you!",
+        "text_hi": "बस एक पल...उत्पादों की खोज जारी है!",
+        "error_en": "Oops! Unfortunately we are unable to retrieve any products at this time. Please try again later.",
+        "error_hi": "दुर्भाग्यवश हम इस समय उत्पादों की जानकारी प्राप्त करने में असमर्थ हैं| कृप्या कुछ समय बाद फ़िर से प्रयास करे|"
+    },
+    "tickets": {
+        "url": "https://insider.in/cricket-in-delhi?utm_source=facebook&utm_medium=chatbot&utm_campaign=fb_messenger",
+        "text_en": "A moment please...retrieving the list of products for you!",
+        "text_hi": "बस एक पल...उत्पादों की खोज जारी है!",
+        "error_en": "Oops! Unfortunately we are unable to retrieve any products at this time. Please try again later.",
+        "error_hi": "दुर्भाग्यवश हम इस समय उत्पादों की जानकारी प्राप्त करने में असमर्थ हैं| कृप्या कुछ समय बाद फ़िर से प्रयास करे|"
     }
 }

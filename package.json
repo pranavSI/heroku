@@ -10,29 +10,7 @@
     "type": "git",
     "url": "git+https://github.com/pranavSI/kxip-facebot.git"
   },
-  "keywords": [
-    "IPL",
-    "Indian",
-    "Premier",
-    "League",
-    "KXIP",
-    "Kings",
-    "XI",
-    "Kings",
-    "XI",
-    "Punjab",
-    "LionsDen",
-    "Cricket",
-    "Live",
-    "Scores",
-    "News",
-    "Photos",
-    "Videos",
-    "Matches",
-    "Results",
-    "Points",
-    "Stats"
-  ],
+  "keywords": [],
   "author": "Pranav Desai",
   "license": "ISC",
   "bugs": {
@@ -44,6 +22,7 @@
     "config": "^1.30.0",
     "curl": "^0.1.4",
     "express": "^4.16.3",
+    "pg": "^7.4.1",
     "request": "^2.85.0",
     "rss-parser": "^3.1.2"
   }

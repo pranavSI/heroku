@@ -21,8 +21,8 @@ const
     config.get('squad');
 
 var players = function (senderID, players_callback, locale) {
-    if (locale.toLowerCase() != "en") {
-        var feedURL = BASE_DOMAIN + TEAM_SQUAD.replace('{locale}', locale.toLowerCase());
+    if (locale != "en") {
+        var feedURL = BASE_DOMAIN + TEAM_SQUAD.replace('{locale}', locale);
     } else {
         feedURL = BASE_DOMAIN + TEAM_SQUAD.replace('{locale}/', '');
     }
@@ -41,7 +41,7 @@ var players = function (senderID, players_callback, locale) {
                 players_callback(defMessages.playerList.error, null);
             } else {
                 var allPlayers = [];
-                var displaylength = arrayOfPlayers.length <= 5 ? arr.arrayOfPlayers : 5;
+                var displaylength = arrayOfPlayers.length <= 10 ? arrayOfPlayers.length : 10;
                 for (var p = 0; p < displaylength; p++) {
                     var playerID = arrayOfPlayers[p].id;
                     var playerName = arrayOfPlayers[p].name;
@@ -53,7 +53,7 @@ var players = function (senderID, players_callback, locale) {
                         subtitle: playerSkill,
                         buttons: [{
                             "type": "web_url",
-                            "url": BASE_DOMAIN + "/players/" + playerID + "-" + playerName.toLowerCase().split(' ').join('-') + "-profile?webview=true",
+                            "url": BASE_DOMAIN + "/players/" + playerID + "-" + playerName.toLowerCase().split(' ').join('-') + "-profile?utm_source=facebook&utm_medium=chatbot&utm_campaign=fb_messenger",
                             "title": "View Profile",
                             "webview_height_ratio": "tall",
                             "webview_share_button": "show"

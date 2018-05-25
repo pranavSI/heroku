@@ -1,102 +1,170 @@
 //Define all required buttons in this file
 
-//Language English
-exports.english = {
-    type: "postback",
-    payload: "LOCALE_EN",
-    title: "English"
-};
+//Load all required files
+const
+    defMessages = require('../../config/defaultMessages.json');
 
-//Language Punjabi
-exports.punjabi = {
-    type: "postback",
-    payload: "LOCALE_HI",
-    title: "हिंदी"
-};
+const
+    config = require('config'),
+    request = require('request');
 
-//English Matches
-exports.matches = {
-    type: "postback",
-    payload: "MATCHES",
-    title: "Matches"
-};
+const
+    LOCALE = (process.env.LOCALE) ?
+    (process.env.LOCALE) :
+    config.get('locale');
 
-//English Live Match
-exports.liveMatch = {
-    type: "postback",
-    payload: "LIVE_MATCH_EN",
-    title: "Live Match"
-};
+//All Buttons
+var allLocale = [];
+var allPersistentMenu = [];
+var allShop = [];
+var allMatches = [];
+var allLive = [];
+var allUpcoming = [];
+var allRecent = [];
+var allPlayers = [];
+var allUpdates = [];
 
-//English Upcoming Match
-exports.upcomingMatch = {
-    type: "postback",
-    payload: "UPCOMING_MATCH_EN",
-    title: "Upcoming Match"
-};
+for (l = 0; l < LOCALE.length; l++) {
+    var locShort = LOCALE[l].locale_short;
+    var locFull = LOCALE[l].locale_full;
+    var locEntity = LOCALE[l].locale_entity;
+    var locMenu = LOCALE[l].menu;
+    var locMatches = LOCALE[l].matches;
+    var locLive = LOCALE[l].live_match;
+    var locUpcoming = LOCALE[l].upcoming_match;
+    var locRecent = LOCALE[l].recent_match;
+    var locPlayers = LOCALE[l].players;
+    var locShop = LOCALE[l].shop;
+    var locTitle = LOCALE[l].tickets;
+    var locUpdates = LOCALE[l].latest_updates;
+    var locSwicth = LOCALE[l].switch_locale;
 
-//English Recent Match
-exports.recentMatch = {
-    type: "postback",
-    payload: "RECENT_MATCH_EN",
-    title: "Recent Match"
-};
+    var objLocale = {
+        "type": "postback",
+        "payload": "GET_LOCALE_" + locShort,
+        "title": locFull
+    }
+    allLocale.push(objLocale);
 
-//English Latest Updates
-exports.latestUpdates = {
-    type: "postback",
-    payload: "LATEST_UPDATES_4",
-    title: "Latest Updates"
-};
+    var objPeristentMenu = {
+        "type": "nested",
+        "title": "🌐 " + locFull,
+        "call_to_actions": [{
+                "type": "web_url",
+                "url": defMessages.tickets.url,
+                "title": "🎟️ " + locTitle,
+                "webview_height_ratio": "full"
+            }, {
+                "type": "postback",
+                "payload": "GET_SHOP_" + locShort,
+                "title": "🛒 " + locShop
+            },
+            {
+                "type": "postback",
+                "payload": "GET_LOCALE_" + locShort,
+                "title": "🏠 " + locMenu
+            },
+            {
+                "type": "postback",
+                "payload": "LIVE_MATCH_" + locShort,
+                "title": "🏏 " + locLive
+            },
+            {
+                "type": "postback",
+                "payload": "LATEST_UPDATES_" + locEntity,
+                "title": "📰 " + locUpdates
+            }
+        ]
+    }
 
-//English Players
-exports.players = {
-    type: "postback",
-    payload: "PLAYERS_EN",
-    title: "Players"
-};
+    //console.log(objPeristentMenu);
+    allPersistentMenu.push(objPeristentMenu);
 
-//Regional Matches
-exports.regMatches = {
-    type: "postback",
-    payload: "MATCHES_REG",
-    title: "मॅचस"
-};
+    var objShop = {
+        "type": "postback",
+        "payload": "GET_SHOP_" + locShort,
+        "title": locShop
+    }
+    allShop.push(objShop);
 
-//Regional Live Match
-exports.regLiveMatch = {
-    type: "postback",
-    payload: "LIVE_MATCH_HI",
-    title: "लाइव मॅच"
-};
+    var objMatches = {
+        "type": "postback",
+        "payload": "GET_MATCHES_" + locShort,
+        "title": locMatches
+    }
+    allMatches.push(objMatches);
 
-//Regional Upcoming Match
-exports.regUpcomingMatch = {
-    type: "postback",
-    payload: "UPCOMING_MATCH_HI",
-    title: "आने वाले मॅच"
-};
+    var objLive = {
+        "type": "postback",
+        "payload": "LIVE_MATCH_" + locShort,
+        "title": locLive
+    }
+    allLive.push(objLive);
 
-//Regional Recent Match
-exports.regRecentMatch = {
-    type: "postback",
-    payload: "RECENT_MATCH_HI",
-    title: "ख़तम हुई मॅच"
-};
+    var objUpcoming = {
+        "type": "postback",
+        "payload": "UPCOMING_MATCH_" + locShort,
+        "title": locUpcoming
+    }
+    allUpcoming.push(objUpcoming);
 
-//Regional Latest Updates
-exports.regLatestUpdates = {
-    type: "postback",
-    payload: "LATEST_UPDATES_60",
-    title: "ताज़ा खबर"
-};
+    var objRecent = {
+        "type": "postback",
+        "payload": "RECENT_MATCH_" + locShort,
+        "title": locRecent
+    }
+    allRecent.push(objRecent);
 
-//Regional Players
-exports.regPlayers = {
-    type: "postback",
-    payload: "PLAYERS_HI",
-    title: "खिलाड़ी"
-};
+    var objPlayers = {
+        "type": "postback",
+        "payload": "GET_PLAYERS_" + locShort,
+        "title": locPlayers
+    }
+    allPlayers.push(objPlayers);
+
+    var objUpdates = {
+        "type": "postback",
+        "payload": "LATEST_UPDATES_" + locEntity,
+        "title": locUpdates
+    }
+    allUpdates.push(objUpdates);
+}
+
+//console.log(allLocale);
+//Language Buttons
+exports.locale = allLocale;
+
+//console.log(allPersistent);
+//Persistent Menu Buttons
+exports.persistent = allPersistentMenu;
+
+//console.log(allShop);
+//Shop Buttons
+exports.shop = allShop;
+
+//console.log(allMatches);
+//Matches Buttons
+exports.matches = allMatches;
+
+//console.log(allLive);
+//Live Match Buttons
+exports.live = allLive;
+
+//console.log(allUpcoming);
+//Upcoming Match Buttons
+exports.upcoming = allUpcoming;
+
+//console.log(allRecent);
+//Recent Match Buttons
+exports.recent = allRecent;
+
+//console.log(allPlayers);
+//Players Buttons
+exports.players = allPlayers;
+
+//console.log(allUpdates);
+//Latest Updates Buttons
+exports.updates = allUpdates;
 
 //Webview URLs
 exports.webview = {

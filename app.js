@@ -8,6 +8,7 @@ process.env.NODE_APP_INSTANCE = 1;
 var defMessages = require('./config/defaultMessages.json');
 var players = require('./src/scripts/players.js');
 var matches = require('./src/scripts/matches.js');
+var shoplist = require('./src/scripts/shop.js');
 var content = require('./src/scripts/content.js');
 var buttons = require('./src/variables/buttons.js');
 var templates = require('./src/variables/templates.js');
@@ -17,11 +18,23 @@ var sendMessage = require('./src/scripts/sendMessage.js');
 const
     config = require('config'),
     express = require('express'),
+    pg = require('pg'),
     bodyParser = require('body-parser'),
     crypto = require('crypto'),
-    //app = express().use(bodyParser.json()), // creates express http server
     request = require('request'),
     https = require('https');
+
+//Base Domain
+const
+    BASE_DOMAIN = (process.env.BASE_DOMAIN) ?
+    (process.env.BASE_DOMAIN) :
+    config.get('base_domain');
+
+//DB Connection Details
+const
+    CONNECTION_STRING = (process.env.CONNECTION_STRING) ?
+    (process.env.CONNECTION_STRING) :
+    config.get('db_connection');
 
 // Sets server port and logs message on success
 var app = express();
@@ -31,7 +44,6 @@ app.use(bodyParser.json({
     verify: verifyRequestSignature
 }));
 app.use(express.static('public'));
-// app.listen(process.env.PORT || 5000, () => console.log('I\'m here. I\'m waiting.'));
 
 // Arbitrary value used to validate a webhook
 const
@@ -184,42 +196,27 @@ function buttonGetStarted() {
         },
         function (error, response, body) {
             if (!error && response.statusCode == 200) {
-                console.log("Success! Get started button setup.");
+                console.log("Success! Get Started button setup is complete.");
                 //Call the Persistent Menu
-                persistentMenu();
+                setPersistentMenu();
             } else {
                 // TODO: Handle errors
-                console.log("Error for Get Started setup: " + error);
-                console.log("Get Started Error: " + body);
+                console.log("Error setting Get Started button: " + error);
+                console.log("This is the Error: " + body);
             }
         });
 }
 
-function persistentMenu() {
-
+function setPersistentMenu() {
+    //console.log(locale);
     var persistentMenu = {
         "persistent_menu": [{
             "locale": "default",
             "composer_input_disabled": false,
-            "call_to_actions": [{
-                    "type": "postback",
-                    "payload": "LIVE_MATCH_EN",
-                    "title": "Live Scores"
-                },
-                {
-                    "type": "postback",
-                    "payload": "LATEST_UPDATES_4",
-                    "title": "Latest Updates"
-                },
-                {
-                    "type": "postback",
-                    "payload": "GET_STARTED",
-                    "title": "Switch Language"
-                }
-            ]
+            "call_to_actions": buttons.persistent
         }]
     }
-
+    //console.log(buttons.persistent[locale]);
     // Start the request
     request({
             url: 'https://graph.facebook.com/v2.12/me/messenger_profile?access_token=' + PAGE_ACCESS_TOKEN,
@@ -232,10 +229,10 @@ function persistentMenu() {
         },
         function (error, response, body) {
             if (!error && response.statusCode == 200) {
-                console.log("Success! Get started button and persistent menu setup.");
+                console.log("Success! Persistent Menu setup is complete.");
             } else {
                 // TODO: Handle errors
-                console.log("Error for Persistent menu setup: " + error);
+                console.log("Error setting up Persistent Menu: " + error);
                 console.log("Persistent Error: " + body);
             }
         });
@@ -275,7 +272,7 @@ function receivedMessageRead(event) {
 
 //Text Message Event & their respective payloads
 function eventTextMessage(event) {
-    //console.log(event.message.nlp);
+    //console.log(event.message.nlp.entities);
 }
 
 //Postback Message Event & their respective Payloads
@@ -287,68 +284,38 @@ function eventPostbackMessage(event) {
 
     // The 'payload' param is a developer-defined field which is set in a postback button for Structured Messages.
     var payload = event.postback.payload;
+    var getLocale = payload.split('_')[2];
 
     switch (payload) {
         case 'GET_STARTED':
-            //console.log(defMessages);
             sendMessage.sendTypingOn(senderID);
             sendMessage.sendTextMessage(senderID, defMessages.getStarted.responseText);
             sendMessage.sendTypingOn(senderID);
-            templates.generic.recipient.id = senderID;
-            templates.generic.message.attachment.payload.elements = [{
+            templates.genericSquare.recipient.id = senderID;
+            templates.genericSquare.message.attachment.payload.elements = [{
                 "title": defMessages.getStarted.title,
-                "buttons": [buttons.english, buttons.punjabi]
+                "image_url": BASE_DOMAIN + defMessages.getStarted.image_url,
+                "subtitle": defMessages.getStarted.subtitle,
+                "buttons": buttons.locale
             }]
 
             var messageDataArray = [];
-            messageDataArray.push(templates.generic);
+            messageDataArray.push(templates.genericSquare);
             sendMessage.recursiveCallSendAPI(senderID, messageDataArray, 0);
-
             break;
 
-        case 'LOCALE_EN':
-            //console.log(defMessages);
+        case 'GET_LOCALE_' + getLocale:
+            var butArr = [buttons.matches[0], buttons.updates[0], buttons.players[0]];
+            if (getLocale != "en") {
+                butArr = [buttons.matches[1], buttons.updates[1], buttons.players[1]];
+            }
             sendMessage.sendTypingOn(senderID);
-            sendMessage.sendTextMessage(senderID, defMessages.locale.responseText);
+            sendMessage.sendTextMessage(senderID, defMessages.locale['text_' + getLocale]);
             templates.generic.recipient.id = senderID;
             templates.generic.message.attachment.payload.elements = [{
-                "title": defMessages.locale.title,
-                "image_url": defMessages.locale.image_url,
-                "buttons": [buttons.matches, buttons.latestUpdates, buttons.players]
-            }]
-
-            var messageDataArray = [];
-            messageDataArray.push(templates.generic);
-            sendMessage.recursiveCallSendAPI(senderID, messageDataArray, 0);
-
-            break;
-
-        case 'LOCALE_HI':
-            //console.log(defMessages);
-            sendMessage.sendTypingOn(senderID);
-            sendMessage.sendTextMessage(senderID, defMessages.locale.responseTextReg);
-            templates.generic.recipient.id = senderID;
-            templates.generic.message.attachment.payload.elements = [{
-                "title": defMessages.locale.titleReg,
-                "image_url": defMessages.locale.image_url,
-                "buttons": [buttons.regMatches, buttons.regLatestUpdates, buttons.regPlayers]
-            }]
-
-            var messageDataArray = [];
-            messageDataArray.push(templates.generic);
-            sendMessage.recursiveCallSendAPI(senderID, messageDataArray, 0);
-
-            break;
-
-        case 'MATCHES':
-            //console.log(defMessages);
-            sendMessage.sendTypingOn(senderID);
-            sendMessage.sendTextMessage(senderID, defMessages.matches.responseText);
-            templates.generic.recipient.id = senderID;
-            templates.generic.message.attachment.payload.elements = [{
-                "title": defMessages.matches.title,
-                "image_url": defMessages.matches.image_url,
-                "buttons": [buttons.liveMatch, buttons.upcomingMatch, buttons.recentMatch]
+                "title": defMessages.locale['title_' + getLocale],
+                "image_url": BASE_DOMAIN + defMessages.locale.image_url,
+                "buttons": butArr
             }]
 
             var messageDataArray = [];
@@ -356,96 +323,174 @@ function eventPostbackMessage(event) {
             sendMessage.recursiveCallSendAPI(senderID, messageDataArray, 0);
             break;
 
-        case 'MATCHES_REG':
-            //console.log(defMessages);
-            sendMessage.sendTypingOn(senderID);
-            sendMessage.sendTextMessage(senderID, defMessages.matches.responseTextReg);
-            templates.generic.recipient.id = senderID;
-            templates.generic.message.attachment.payload.elements = [{
-                "title": defMessages.matches.titleReg,
-                "image_url": defMessages.matches.image_url,
-                "buttons": [buttons.regLiveMatch, buttons.regUpcomingMatch, buttons.regRecentMatch]
-            }]
-
-            var messageDataArray = [];
-            messageDataArray.push(templates.generic);
-            sendMessage.recursiveCallSendAPI(senderID, messageDataArray, 0);
-            break;
-
-        case 'LIVE_MATCH_EN':
-        case 'UPCOMING_MATCH_EN':
-        case 'RECENT_MATCH_EN':
-        case 'LIVE_MATCH_HI':
-        case 'UPCOMING_MATCH_HI':
-        case 'RECENT_MATCH_HI':
-            //console.log(players(senderID, players_callback));
-            var matches_callback = function (err, elementList) {
+        case 'GET_SHOP_' + getLocale:
+            //console.log(shoplist(senderID, shop_callback, getLocale));
+            var shop_callback = function (err, elementList, activeLocale) {
                 var messageDataArray = [];
                 templates.typingOnInd.recipient.id = senderID;
                 messageDataArray.push(templates.typingOnInd);
                 templates.textmsg.recipient.id = senderID;
-                templates.textmsg.message.text = defMessages.liveMatch.responseText;
+                templates.textmsg.message.text = defMessages.shop['text_' + activeLocale];
                 messageDataArray.push(templates.textmsg);
-
-                if (err != null) {
+                //console.log(elementList);
+                if (err) {
                     var errorMsg = JSON.parse(JSON.stringify(templates.textmsg));
                     errorMsg.recipient.id = senderID;
-                    errorMsg.message.text = err;
+                    errorMsg.message.text = defMessages.shopdefMessages.shop['error_' + activeLocale];
                     messageDataArray.push(errorMsg);
-
-                    templates.generic.recipient.id = senderID;
-                    templates.generic.message.attachment.payload.elements = [{
-                        "title": defMessages.matches.title,
-                        "image_url": defMessages.matches.image_url,
-                        "buttons": [buttons.regUpcomingMatch, buttons.regRecentMatch]
-                    }]
-
-                    var messageDataArray = [];
-                    messageDataArray.push(templates.generic);
-                    sendMessage.recursiveCallSendAPI(senderID, messageDataArray, 0);
                 } else {
 
                     if (elementList.length == 0) {
-                        var noMatch = JSON.parse(JSON.stringify(templates.textmsg));
-                        noMatch.recipient.id = senderID;
-                        noMatch.message.text = defMessages.liveMatch.error;
-                        messageDataArray.push(noMatch);
+                        var noShop = JSON.parse(JSON.stringify(templates.textmsg));
+                        noShop.recipient.id = senderID;
+                        noShop.message.text = defMessages.shopdefMessages.shop['error_' + activeLocale];
+                        messageDataArray.push(noShop);
                     } else {
-                        //setting up carousel template
-                        templates.generic.recipient.id = senderID;
-                        templates.generic.message.attachment.payload.elements = elementList;
-                        messageDataArray.push(templates.generic);
+                        //setting up list template
+                        templates.listCompactBtn.recipient.id = senderID;
+                        templates.listCompactBtn.message.attachment.payload.elements = elementList;
+                        templates.listCompactBtn.message.attachment.payload.buttons = [{
+                            "type": "web_url",
+                            "title": "View More",
+                            "url": BASE_DOMAIN + "/shop?utm_source=facebook&utm_medium=chatbot&utm_campaign=fb_messenger"
+                        }];
+                        messageDataArray.push(templates.listCompactBtn);
                     }
                 }
                 sendMessage.recursiveCallSendAPI(senderID, messageDataArray, 0);
             }
-            console.log(payload);
-            var locale = payload.split('_')[2];
-            matches(senderID, payload, matches_callback, locale);
+            //console.log(payload);
+            shoplist(senderID, shop_callback, getLocale);
             break;
 
-        case 'PLAYERS_EN':
-        case 'PLAYERS_HI':
+        case 'GET_MATCHES_' + getLocale:
+            //console.log(defMessages);
+            var butArr = [buttons.live[0], buttons.upcoming[0], buttons.recent[0]];
+            if (getLocale != "en") {
+                butArr = [buttons.live[1], buttons.upcoming[1], buttons.recent[1]];
+            }
+            //console.log(defMessages);
+            sendMessage.sendTypingOn(senderID);
+            sendMessage.sendTextMessage(senderID, defMessages.matches['text_' + getLocale]);
+            templates.generic.recipient.id = senderID;
+            templates.generic.message.attachment.payload.elements = [{
+                "title": defMessages.matches['title_' + getLocale],
+                "image_url": BASE_DOMAIN + defMessages.matches.image_url,
+                "buttons": butArr
+            }]
+
+            var messageDataArray = [];
+            messageDataArray.push(templates.generic);
+            sendMessage.recursiveCallSendAPI(senderID, messageDataArray, 0);
+            break;
+
+        case 'LIVE_MATCH_' + getLocale:
+        case 'UPCOMING_MATCH_' + getLocale:
+        case 'RECENT_MATCH_' + getLocale:
+
+            var matches_callback = function (err, elementList, typeOfMatch) {
+                var butArr = [];
+                var butErrArr = [];
+
+                butArr.push(buttons.live[0]);
+                butArr.push(buttons.upcoming[0]);
+                butArr.push(buttons.recent[0]);
+
+                //Buttons in case of No Live Matches
+                butErrArr.push(buttons.upcoming[0]);
+                butErrArr.push(buttons.recent[0]);
+
+                if (getLocale != 'en') {
+                    var butArr = [];
+                    var butErrArr = [];
+
+                    butArr.push(buttons.live[1]);
+                    butArr.push(buttons.upcoming[1]);
+                    butArr.push(buttons.recent[1]);
+
+                    //Buttons in case of No Live Matches
+                    butErrArr.push(buttons.upcoming[1]);
+                    butErrArr.push(buttons.recent[1]);
+                }
+
+                var messageDataArray = [];
+                templates.typingOnInd.recipient.id = senderID;
+                messageDataArray.push(templates.typingOnInd);
+                var errorResponse = defMessages.upcomingMatch['error_' + getLocale];
+                if (typeOfMatch == 'L') {
+                    errorResponse = defMessages.liveMatch['error_' + getLocale];
+                } else if (typeOfMatch == 'R') {
+                    errorResponse = defMessages.recentMatch['error_' + getLocale];
+                }
+                var titleResponse = defMessages.matches['title_' + getLocale];
+                if (err) {
+                    console.log('Some error occured');
+                    var messageDataArray = [];
+                    var errorMsg = JSON.parse(JSON.stringify(templates.textmsg));
+                    errorMsg.recipient.id = senderID;
+                    errorMsg.message.text = errorResponse;
+                    messageDataArray.push(errorMsg);
+
+                    templates.generic.recipient.id = senderID;
+                    templates.generic.message.attachment.payload.elements = [{
+                        "title": titleResponse,
+                        "buttons": butErrArr
+                    }]
+
+                    messageDataArray.push(templates.generic);
+                    sendMessage.recursiveCallSendAPI(senderID, messageDataArray, 0);
+                } else if (elementList.length == 0) {
+                    console.log('Element List is 0');
+                    var noMatch = JSON.parse(JSON.stringify(templates.textmsg));
+                    noMatch.recipient.id = senderID;
+                    noMatch.message.text = errorResponse;
+
+                    templates.generic.recipient.id = senderID;
+                    templates.generic.message.attachment.payload.elements = [{
+                        "title": titleResponse,
+                        "buttons": butErrArr
+                    }]
+
+                    var messageDataArray = [];
+                    templates.typingOnInd.recipient.id = senderID;
+                    messageDataArray.push(templates.typingOnInd);
+                    messageDataArray.push(noMatch);
+                    messageDataArray.push(templates.generic);
+                } else {
+                    console.log('There are matches to show');
+                    var messageDataArray = [];
+                    //setting up carousel template
+                    templates.generic.recipient.id = senderID;
+                    templates.generic.message.attachment.payload.elements = elementList;
+                    messageDataArray.push(templates.generic);
+                }
+                sendMessage.recursiveCallSendAPI(senderID, messageDataArray, 0);
+            }
+            //console.log(payload);
+            matches(senderID, payload, matches_callback, getLocale);
+            break;
+
+        case 'GET_PLAYERS_' + getLocale:
             //console.log(players(senderID, players_callback));
             var players_callback = function (err, elementList) {
                 var messageDataArray = [];
                 templates.typingOnInd.recipient.id = senderID;
                 messageDataArray.push(templates.typingOnInd);
                 templates.textmsg.recipient.id = senderID;
-                templates.textmsg.message.text = defMessages.playerList.text;
+                templates.textmsg.message.text = defMessages.playerList['text_' + getLocale];
                 messageDataArray.push(templates.textmsg);
                 //console.log(elementList);
-                if (err != null) {
+                if (err) {
                     var errorMsg = JSON.parse(JSON.stringify(templates.textmsg));
                     errorMsg.recipient.id = senderID;
-                    errorMsg.message.text = err;
+                    errorMsg.message.text = defMessages.playerList['error_' + getLocale];
                     messageDataArray.push(errorMsg);
                 } else {
 
                     if (elementList.length == 0) {
                         var noPlayers = JSON.parse(JSON.stringify(templates.textmsg));
                         noPlayers.recipient.id = senderID;
-                        noPlayers.message.text = defMessages.playerList.error;
+                        noPlayers.message.text = defMessages.playerList['error_' + getLocale];
                         messageDataArray.push(noPlayers);
                     } else {
                         //setting up carousel template
@@ -457,21 +502,19 @@ function eventPostbackMessage(event) {
                 sendMessage.recursiveCallSendAPI(senderID, messageDataArray, 0);
             }
             //console.log(payload);
-            var locale = payload.split('_')[1];
-            players(senderID, players_callback, locale);
+            players(senderID, players_callback, getLocale);
             break;
 
-        case 'LATEST_UPDATES_4':
-        case 'LATEST_UPDATES_60':
-            //console.log(players(senderID, players_callback));
+        case 'LATEST_UPDATES_' + getLocale:
             var content_callback = function (elementList) {
+                //console.log(getLocale);
                 var messageDataArray = [];
                 templates.typingOnInd.recipient.id = senderID;
                 messageDataArray.push(templates.typingOnInd);
                 templates.textmsg.recipient.id = senderID;
-                templates.textmsg.message.text = defMessages.content.text;
+                templates.textmsg.message.text = defMessages.content['text_' + getLocale];
                 messageDataArray.push(templates.textmsg);
-                console.log(elementList.length);
+                //console.log(elementList.length);
 
                 //setting up carousel template
                 templates.genericSquare.recipient.id = senderID;
@@ -480,8 +523,7 @@ function eventPostbackMessage(event) {
                 sendMessage.recursiveCallSendAPI(senderID, messageDataArray, 0);
             }
             //console.log(payload);
-            var locale = payload.split('_')[2];
-            content(senderID, content_callback, locale);
+            content(senderID, content_callback, getLocale);
             break;
     }
 }

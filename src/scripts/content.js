@@ -34,35 +34,45 @@ var content = function (senderID, content_callback, locale) {
 
     async function feedParser() {
         console.log('Calling RSS Feed');
-        var feedData = await parser.parseURL(BASE_DOMAIN + CONTENT_FEED.replace('{locale}', locale));
-        //console.log(feedData.items);
-        var allContent = [];
-        if (feedData) {
-            for (c = 0; c < 10; c++) {
-                var contentTitle = feedData.items[c].title;
-                var contentLink = feedData.items[c].link;
-                var contentDesc = feedData.items[c].synopsis;
-                var contentImg = feedData.items[c].imagePath;
-                var imgRegex = /<div[^>]*.>*.\s*<img src=\"([^"]+)\"*.[^<]*.\s*<\/div>/;
-                var contentImgSrc = contentImg.split(imgRegex)[1].replace('/16-9/1035-512/', '/1-1/388-218/');
-                //console.log(contentImgSrc);
-                var obj = {
-                    title: contentTitle,
-                    image_url: contentImgSrc,
-                    subtitle: contentDesc,
-                    "default_action": {
-                        "type": "web_url",
-                        "url": contentLink + "?webview=true"
+
+        try {
+            const feedData = await parser.parseURL(BASE_DOMAIN + CONTENT_FEED.replace('{locale}', locale));
+            //console.log(BASE_DOMAIN + CONTENT_FEED.replace('{locale}', locale));
+            var feedItems = feedData.items;
+            var feedLength = feedItems.length;
+            if (feedLength > 10) feedLength = 10;
+            var allContent = [];
+            if (feedItems) {
+                //console.log(feedItems[0].title);
+                for (var c = 0; c < feedLength; c++) {
+                    var contentTitle = feedData.items[c].title;
+                    var contentLink = feedData.items[c].link;
+                    var contentDesc = feedData.items[c].synopsis;
+                    var contentImg = feedData.items[c].imagePath;
+                    var imgRegex = /<div[^>]*.>*.\s*<img src=\"([^"]+)\"*.[^<]*.\s*<\/div>/;
+                    var contentImgSrc = contentImg.split(imgRegex)[1].replace('/16-9/1035-512/', '/1-1/388-218/');
+                    // console.log(contentTitle);
+                    var obj = {
+                        title: contentTitle,
+                        image_url: contentImgSrc,
+                        subtitle: contentDesc,
+                        "default_action": {
+                            "type": "web_url",
+                            "url": contentLink + "?utm_source=facebook&utm_medium=chatbot&utm_campaign=fb_messenger"
+                        }
                     }
+                    //console.log(obj);
+                    allContent.push(obj);
                 }
-                //console.log(obj);
-                allContent.push(obj);
+                content_callback(allContent);
+            } else {
+                console.error("Failed calling Send API", response.statusCode, response.statusMessage, body.error);
             }
-            content_callback(allContent);
-        } else {
-            console.error("Failed calling Send API", response.statusCode, response.statusMessage, body.error);
+        } catch (err) {
+            console.error(err);
         }
     }
+
     feedParser();
 }
 

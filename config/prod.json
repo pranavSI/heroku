@@ -1,0 +1,42 @@
+{
+    "app_secret": "15b9e261c7926618d2de7d1c2f9cd14e",
+    "page_access_token": "EAAC26xoNWuoBAFeNqrZBjY1R4q7j542fzM6PtEzjOKZAxpPyUcLZByacSLZCo6ZCzj5ZA8oqELRJGTuxoeZA9YuudrX3V7q0PZBkZAfctDZBGk4Nemdnjbd9VzAzp06FhOchYHmonhEn9J2SJE7k7O1qIN4pWkBzhqjCbP5nmjTmodTZA41SeICdys5",
+    "validation_token": "FBBOT2018",
+    "server_url": "https://bot-dd.sportz.io/",
+    "base_domain": "https://www.delhidaredevils.com",
+    "squad": "/sifeeds/repo/cricket/static/json/{locale}/2940_1109_squad.json",
+    "cricket_matches": "/sifeeds/multisport/?methodtype=3&client=44&sport=1&league=ipl&timezone=0530&language={locale}&gamestate=4",
+    "content_feed": "/api/feed?type=1&utime=500&sEntities={locale}",
+    "shop_list": "/api/Shop/getProductlisting?pgnum=1&inum=10&pgsize=10&p_product_typeid=&entities=34&otherent=&p_searchkeyword=",
+    "locale": [{
+            "locale_short": "en",
+            "locale_full": "English",
+            "locale_entity": 4,
+            "menu": "Home",
+            "matches": "Matches",
+            "live_match": "Live Match",
+            "upcoming_match": "Upcoming Matches",
+            "recent_match": "Recent Matches",
+            "latest_updates": "Latest Updates",
+            "players": "Players",
+            "shop": "Shop",
+            "switch_locale": "Change Language",
+            "tickets": "Buy Tickets"
+        },
+        {
+            "locale_short": "hi",
+            "locale_full": "हिंदी",
+            "locale_entity": 60,
+            "menu": "होम",
+            "matches": "मॅचस",
+            "live_match": "लाइव मॅच",
+            "upcoming_match": "आने वाले मॅच",
+            "recent_match": "ख़तम हुई मॅच",
+            "latest_updates": "ताज़ा ख़बरे",
+            "players": "खिलाड़ी",
+            "shop": "शॉप",
+            "switch_locale": "भाषा बदलो",
+            "tickets": "टिकट खरीदो"
+        }
+    ]
+}

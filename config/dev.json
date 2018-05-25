@@ -1,10 +1,50 @@
 {
     "app_secret": "688132b228b038cebe020c440ff85298",
-    "page_access_token": "EAACqbaqxQgUBAKzZCw36kjoRp2SlxQhZBTZA8uWMqCxZBu7wlo2SNFCvYoTwnJwaQZAu77dZBdC6RcXI4cuvfkZBeLXV7hJZCDAJDVjAghpjjbklZBHrTrv13ZAtQJ4XVy4NOiNgBcLz9T3nO4ZCxxS6FFKFcFjRD6Ok7za1n9JOaOYrQZDZD",
+    "page_access_token": "EAACqbaqxQgUBAFZC1ZCwJnhrZAsa2gZC5ZB8N2qtE80Sjp0qHVw7AHZB7bzvjdEreoQ8hEbemZBMDSZAoVLCihN37OaZANcROZAyUqNeIc1vvPzk6SdWL9ZAfFAlH0OXbepwCVkQUEZCCxQuVUqJdK5bZBgs2BmsS8W5ZBGIIOnvvAucJcMCthn5T3RPlN",
     "validation_token": "FBBOT2018",
-    "server_url": "http://kxip-facebot.herokuapp.com/",
+    "server_url": "https://a7d0c945.ngrok.io/",
     "base_domain": "https://www.delhidaredevils.com",
     "squad": "/sifeeds/repo/cricket/static/json/{locale}/2940_1109_squad.json",
     "cricket_matches": "/sifeeds/multisport/?methodtype=3&client=44&sport=1&league=ipl&timezone=0530&language={locale}&gamestate=4",
-    "content_feed": "/api/feed?type=1&utime=500&sEntities={locale}"
+    "content_feed": "/api/feed?type=1&utime=500&sEntities={locale}",
+    "shop_list": "/api/Shop/getProductlisting?pgnum=1&inum=10&pgsize=10&p_product_typeid=&entities=34&otherent=&p_searchkeyword=",
+    "db_connection": {
+        "user": "postgres",
+        "database": "postgres",
+        "password": "postgres",
+        "port": 5432,
+        "max": 100,
+        "idleTimeoutMillis": 30000
+    },
+    "locale": [{
+            "locale_short": "en",
+            "locale_full": "English",
+            "locale_entity": 4,
+            "menu": "Home",
+            "matches": "Matches",
+            "live_match": "Live Match",
+            "upcoming_match": "Upcoming Matches",
+            "recent_match": "Recent Matches",
+            "latest_updates": "Latest Updates",
+            "players": "Players",
+            "shop": "Shop",
+            "switch_locale": "Change Language",
+            "tickets": "Buy Tickets"
+        },
+        {
+            "locale_short": "hi",
+            "locale_full": "हिंदी",
+            "locale_entity": 60,
+            "menu": "होम",
+            "matches": "मॅचस",
+            "live_match": "लाइव मॅच",
+            "upcoming_match": "आने वाले मॅच",
+            "recent_match": "ख़तम हुई मॅच",
+            "latest_updates": "ताज़ा ख़बरे",
+            "players": "खिलाड़ी",
+            "shop": "शॉप",
+            "switch_locale": "भाषा बदलो",
+            "tickets": "टिकट खरीदो"
+        }
+    ]
 }
